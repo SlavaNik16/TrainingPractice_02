@@ -21,14 +21,18 @@ namespace TrainingPractice_02
 
         private void butStart_Click(object sender, EventArgs e)
         {
-
+            var gameForm = new GameForm(int.Parse(count));
+            gameForm.Owner = this;
+            gameForm.Hide();
+            gameForm.Show();
         }
 
         private void Validates()
         {
             butStart.Enabled =
                 !string.IsNullOrWhiteSpace(txtCount.Text) &&
-                (int.Parse(txtCount.Text.ToString()) < 25) ;
+                (int.Parse(txtCount.Text.ToString()) < 17) &&
+                (int.Parse(txtCount.Text.ToString()) > 2);
         }
 
         private void txtCount_KeyPress(object sender, KeyPressEventArgs e)

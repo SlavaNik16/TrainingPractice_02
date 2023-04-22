@@ -64,7 +64,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(57, 31);
             this.label2.TabIndex = 2;
-            this.label2.Text = "0 < ";
+            this.label2.Text = "2 < ";
             // 
             // label3
             // 
@@ -74,7 +74,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(71, 31);
             this.label3.TabIndex = 3;
-            this.label3.Text = " < 25";
+            this.label3.Text = " < 17";
             // 
             // butStart
             // 
@@ -99,6 +99,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtCount);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Главная";
             this.ResumeLayout(false);
             this.PerformLayout();
