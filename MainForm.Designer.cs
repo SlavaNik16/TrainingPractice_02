@@ -74,7 +74,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(71, 31);
             this.label3.TabIndex = 3;
-            this.label3.Text = " < 17";
+            this.label3.Text = " < 13";
             // 
             // butStart
             // 
