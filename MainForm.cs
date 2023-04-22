@@ -21,9 +21,9 @@ namespace TrainingPractice_02
 
         private void butStart_Click(object sender, EventArgs e)
         {
-            var gameForm = new GameForm(int.Parse(count));
+            var counts = int.Parse(count);
+            var gameForm = new GameForm(counts);
             gameForm.Owner = this;
-            gameForm.Hide();
             gameForm.Show();
         }
 
@@ -31,7 +31,7 @@ namespace TrainingPractice_02
         {
             butStart.Enabled =
                 !string.IsNullOrWhiteSpace(txtCount.Text) &&
-                (int.Parse(txtCount.Text.ToString()) < 17) &&
+                (int.Parse(txtCount.Text.ToString()) < 13) &&
                 (int.Parse(txtCount.Text.ToString()) > 2);
         }
 

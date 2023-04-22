@@ -20,7 +20,6 @@ namespace TrainingPractice_02
         } 
         public GameForm(int count):this()
         {
-            var form = new GameForm();
 
             tablePanel.Dock = DockStyle.Fill;
 
@@ -30,9 +29,6 @@ namespace TrainingPractice_02
             var height = 100.0f / count;
             var width = 100.0f / count;
 
-            //form.Width = (int)(ClientRectangle.Width - (ClientRectangle.Width * width /100f));
-            //form.Height = (int)(ClientRectangle.Height - (ClientRectangle.Height * height /100f));
-            
 
             for (var i = 0; i < count; i++)
             {
