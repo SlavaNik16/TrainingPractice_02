@@ -198,7 +198,7 @@ namespace TrainingPractice_02
         {
             int num = 1,i,j;
             var rnd = new Random();
-            while(num != size * size)
+            while (num != size * size)
             {
                 i = rnd.Next(size);
                 j = rnd.Next(size);
