@@ -29,7 +29,7 @@ namespace TrainingPractice_02
 
             size = count;
             mas = new int[count, count];
-            Shuffle(ref mas);
+            Shuffle();
 
             tablePanel.Dock = DockStyle.Fill;
 
@@ -156,6 +156,10 @@ namespace TrainingPractice_02
                     }
                 }
             }
+            if (isWin())
+            {
+                MessageBox.Show("Поздравляю вы победили!","Ура!!!");
+            }
            
 
 
@@ -194,20 +198,42 @@ namespace TrainingPractice_02
             }
         }
 
-        private void Shuffle(ref int[,] mas)
+        private void Shuffle()
         {
             int num = 1,i,j;
             var rnd = new Random();
             while (num != size * size)
             {
-                i = rnd.Next(size);
+                i = rnd.Next(size-1);
                 j = rnd.Next(size);
                 if (mas[i, j] == 0)
                 {
+
                     mas[i, j] = num;
                     num++;
+
                 }
             }
+        }
+
+        private bool isWin()
+        {
+
+            for(int i = 0; i < size; i++)
+            {
+                for(int j = 0; j < size; j++)
+                {
+                    if(i == size - 1 && j == size-1)
+                    {
+                        if (mas[i, j] == 0) return true;
+                    }
+                    if (mas[i, j] != size * i + j + 1)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
     }
