@@ -21,10 +21,10 @@ namespace TrainingPractice_02
         public GameForm()
         {
             InitializeComponent();
-            
-           
-        } 
-        public GameForm(int count):this()
+
+
+        }
+        public GameForm(int count) : this()
         {
 
             size = count;
@@ -52,7 +52,7 @@ namespace TrainingPractice_02
                     tablePanel.ColumnStyles[j].SizeType = SizeType.Percent;
                     tablePanel.ColumnStyles[j].Width = width;
                     tablePanel.ColumnStyles.Add(new ColumnStyle());
-                    if (mas[i, j] == 0)
+                    if (mas[i, j] == -1)
                     {
                         tablePanel.Controls.Add(new Label());
                     }
@@ -82,13 +82,13 @@ namespace TrainingPractice_02
         private void Button_Click(object sender, EventArgs e)
         {
             Button clickButton = (Button)sender;
-            int.TryParse(clickButton.Text.ToString(), out int number); 
+            int.TryParse(clickButton.Text.ToString(), out int number);
             int indexI = -1;
-            int indexJ = -1;    
+            int indexJ = -1;
 
             for (int i = 0; i < size; i++)
             {
-                for(int j = 0; j < size; j++)
+                for (int j = 0; j < size; j++)
                 {
                     if (mas[i, j] == number)
                     {
@@ -99,25 +99,25 @@ namespace TrainingPractice_02
                 }
                 if (indexJ != -1) break;
             }
-            
-             Control positionStart = tablePanel.GetControlFromPosition(indexJ, indexI);
+
+            Control positionStart = tablePanel.GetControlFromPosition(indexJ, indexI);
             int temp;
             if (positionStart != null)
             {
                 if (indexI + 1 != size)
                 {
-                    if (mas[indexI + 1, indexJ] == 0)
+                    if (mas[indexI + 1, indexJ] == -1)
                     {
                         //MessageBox.Show("Кнопка может переместиться вниз");
                         SwapCellsRight(positionStart, indexI + 1, indexJ);
                         temp = mas[indexI, indexJ];
                         mas[indexI, indexJ] = mas[indexI + 1, indexJ];
-                        mas[indexI+1,indexJ] = temp;
+                        mas[indexI + 1, indexJ] = temp;
                     }
                 }
                 if (indexI != 0)
                 {
-                    if (mas[indexI - 1, indexJ] == 0)
+                    if (mas[indexI - 1, indexJ] == -1)
                     {
                         //MessageBox.Show("Кнопка может переместиться вверх");
                         SwapCellsLeft(positionStart, indexI - 1, indexJ);
@@ -129,56 +129,57 @@ namespace TrainingPractice_02
 
                 if (indexJ + 1 != size)
                 {
-                    if (mas[indexI, indexJ + 1] == 0)
+                    if (mas[indexI, indexJ + 1] == -1)
                     {
 
                         //MessageBox.Show("Кнопка может переместиться вправо");
-                        SwapCellsRight(positionStart, indexI, indexJ + 1); 
-                       
+                        SwapCellsRight(positionStart, indexI, indexJ + 1);
+
                         temp = mas[indexI, indexJ];
-                        mas[indexI, indexJ] = mas[indexI, indexJ+1];
-                        mas[indexI, indexJ+1] = temp;
-                       
+                        mas[indexI, indexJ] = mas[indexI, indexJ + 1];
+                        mas[indexI, indexJ + 1] = temp;
+
                     }
                 }
 
                 if (indexJ != 0)
                 {
-                    if (mas[indexI, indexJ - 1] == 0)
+                    if (mas[indexI, indexJ - 1] == -1)
                     {
 
                         //MessageBox.Show("Кнопка может переместиться влево");
                         SwapCellsLeft(positionStart, indexI, indexJ - 1);
                         temp = mas[indexI, indexJ];
-                        mas[indexI, indexJ] = mas[indexI, indexJ-1];
-                        mas[indexI, indexJ-1] = temp; 
-                       
+                        mas[indexI, indexJ] = mas[indexI, indexJ - 1];
+                        mas[indexI, indexJ - 1] = temp;
+
                     }
                 }
             }
             if (isWin())
             {
-                MessageBox.Show("Поздравляю вы победили!","Ура!!!");
+                MessageBox.Show("Поздравляю вы победили!", "Ура!!!");
+                Close();
             }
-           
+
 
 
         }
 
         private void SwapCellsLeft(Control positionStart, int indexINext, int indexJNext)
-        {    
-           
-            Control positionEnd = tablePanel.GetControlFromPosition(indexJNext,indexINext);
+        {
+
+            Control positionEnd = tablePanel.GetControlFromPosition(indexJNext, indexINext);
 
             if (positionEnd != null)
             {
 
                 var cellStart = tablePanel.GetPositionFromControl(positionStart);
-                var cellEnd = tablePanel.GetPositionFromControl(positionEnd); 
+                var cellEnd = tablePanel.GetPositionFromControl(positionEnd);
                 tablePanel.SetCellPosition(positionStart, cellEnd);
-                tablePanel.SetCellPosition(positionEnd, cellStart);  
-                
-               
+                tablePanel.SetCellPosition(positionEnd, cellStart);
+
+
             }
         }
         private void SwapCellsRight(Control positionStart, int indexINext, int indexJNext)
@@ -200,32 +201,55 @@ namespace TrainingPractice_02
 
         private void Shuffle()
         {
-            int num = 1,i,j;
+            for (int m = 0; m < size; m++)
+            {
+                for (int n = 0; n < size; n++)
+                {
+                    mas[m, n] = 0;
+                }
+                if (m == size - 1) mas[m, size - 1] = -1;
+            }
+            int num = 1, i, j;
             var rnd = new Random();
             while (num != size * size)
             {
-                i = rnd.Next(size-1);
+                i = rnd.Next(size);
                 j = rnd.Next(size);
+                if (num == size * size - 1)
+                {
+                    if (size == 4)
+                    {
+                        int temp;
+                        if (mas[i, j] == 0)
+                        {
+                            temp = mas[size - 1, size - 2];
+                            mas[size - 1, size - 2] = num;
+                            mas[i, j] = temp;
+                            break;
+                        }
+                    }
+                }
+
                 if (mas[i, j] == 0)
                 {
-
                     mas[i, j] = num;
                     num++;
 
                 }
             }
-        }
+            mas[size - 1, size - 1] = -1;
+            if (!isShuffle()) Shuffle(); }
 
         private bool isWin()
         {
 
-            for(int i = 0; i < size; i++)
+            for (int i = 0; i < size; i++)
             {
-                for(int j = 0; j < size; j++)
+                for (int j = 0; j < size; j++)
                 {
-                    if(i == size - 1 && j == size-1)
+                    if (i == size - 1 && j == size - 1)
                     {
-                        if (mas[i, j] == 0) return true;
+                        if (mas[i, j] == -1) return true;
                     }
                     if (mas[i, j] != size * i + j + 1)
                     {
@@ -236,5 +260,29 @@ namespace TrainingPractice_02
             return true;
         }
 
+        private bool isShuffle()
+        {
+            int num = 0;
+            int countMess = 0;
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    num++;
+                    if (num == size * size)
+                    {
+                        num = -1;
+                    }
+                    if (mas[i, j] != num)
+                    {
+                        countMess++;
+                    }
+                }
+            }
+            //if (countMess % 2 == 0 && countMess != size * size - 2) return true;
+            if ((countMess % 2 != 0 && size % 2 != 0) ||
+                (countMess % 2 == 0 && size % 2 == 0)) return true;
+            return false;
+        }
     }
 }
