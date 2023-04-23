@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -17,6 +18,7 @@ namespace TrainingPractice_02
         private Button button;
         private int[,] mas;
         private int size;
+        private Stopwatch stopwatch;
         public GameForm()
         {
             InitializeComponent();
@@ -49,21 +51,27 @@ namespace TrainingPractice_02
                     tablePanel.ColumnStyles.Add(new ColumnStyle());
                     if (i == count - 1 && j == count - 1)
                     {
+                        tablePanel.Controls.Add(new Label());
                         mas[i,j] = -1;
                         break;
                     }
                     mas[i, j] = count * i + j + 1;
                     button = new Button();
                     button.Text = $"{count * i + j + 1}";
+                    button.Font = new Font("Times New Roman", 24);
+                    if(count > 10)
+                    {
+                        button.Font = new Font("Times New Roman", 14);
+                    }
                     button.Width = ClientRectangle.Width / count;
                     button.Height = ClientRectangle.Height / count;
                     button.BackColor = Color.Orange;
                     button.ForeColor = Color.Black;
                     button.FlatStyle = FlatStyle.Flat;
                     button.Dock = DockStyle.Fill;
-
-                    button.Click += Button_Click;
                     tablePanel.Controls.Add(button);
+                    button.Click += Button_Click;
+                    
                     
                     
                 }
@@ -76,7 +84,9 @@ namespace TrainingPractice_02
             int.TryParse(clickButton.Text.ToString(), out int number); 
             int indexI = -1;
             int indexJ = -1;
-            for(int i = 0; i < size; i++)
+            stopwatch = new Stopwatch();
+
+            for (int i = 0; i < size; i++)
             {
                 for(int j = 0; j < size; j++)
                 {
@@ -89,26 +99,107 @@ namespace TrainingPractice_02
                 }
                 if (indexJ != -1) break;
             }
-            if (indexI + 1 != size)
+            
+             Control positionStart = tablePanel.GetControlFromPosition(indexJ, indexI);
+            int temp;
+            if (positionStart != null)
             {
-                if (mas[indexI + 1, indexJ] == -1)
+                if (indexI + 1 != size)
                 {
-                    MessageBox.Show("Кнопка может спуститься вниз");
+                    if (mas[indexI + 1, indexJ] == -1)
+                    {
+                        //MessageBox.Show("Кнопка может переместиться вниз");
+                        SwapCellsRight(positionStart, indexI + 1, indexJ);
+                        temp = mas[indexI, indexJ];
+                        mas[indexI, indexJ] = mas[indexI + 1, indexJ];
+                        mas[indexI+1,indexJ] = temp;
+                    }
+                }
+                if (indexI != 0)
+                {
+                    if (mas[indexI - 1, indexJ] == -1)
+                    {
+                        //MessageBox.Show("Кнопка может переместиться вверх");
+                        SwapCellsLeft(positionStart, indexI - 1, indexJ);
+                        temp = mas[indexI, indexJ];
+                        mas[indexI, indexJ] = mas[indexI - 1, indexJ];
+                        mas[indexI - 1, indexJ] = temp;
+                    }
+                }
+
+                if (indexJ + 1 != size)
+                {
+                    if (mas[indexI, indexJ + 1] == -1)
+                    {
+
+                        //MessageBox.Show("Кнопка может переместиться вправо");
+                        SwapCellsRight(positionStart, indexI, indexJ + 1); 
+                       
+                        temp = mas[indexI, indexJ];
+                        mas[indexI, indexJ] = mas[indexI, indexJ+1];
+                        mas[indexI, indexJ+1] = temp;
+                       
+                    }
+                }
+
+                if (indexJ != 0)
+                {
+                    if (mas[indexI, indexJ - 1] == -1)
+                    {
+
+                        //MessageBox.Show("Кнопка может переместиться влево");
+                        SwapCellsLeft(positionStart, indexI, indexJ - 1);
+                        temp = mas[indexI, indexJ];
+                        mas[indexI, indexJ] = mas[indexI, indexJ-1];
+                        mas[indexI, indexJ-1] = temp; 
+                       
+                    }
                 }
             }
-            if (indexI != 0)
-            {
-                if (mas[indexI - 1, indexJ] == -1)
-                {
-                    MessageBox.Show("Кнопка может подняться вверх");
-                }
-            }
+           
+
 
         }
 
-        private void tablePanel_CellPaint(object sender, TableLayoutCellPaintEventArgs e)
+        private void SwapCellsLeft(Control positionStart, int indexINext, int indexJNext)
+        {    
+           
+            Control positionEnd = tablePanel.GetControlFromPosition(indexJNext,indexINext);
+
+            if (positionEnd != null)
+            {
+
+                var cellStart = tablePanel.GetPositionFromControl(positionStart);
+                var cellEnd = tablePanel.GetPositionFromControl(positionEnd); 
+                stopwatch.Start();
+                tablePanel.SetCellPosition(positionStart, cellEnd);
+                tablePanel.SetCellPosition(positionEnd, cellStart);  
+                stopwatch.Stop();
+                //MessageBox.Show($"{stopwatch.ElapsedMilliseconds}");
+                
+               
+            }
+        }
+        private void SwapCellsRight(Control positionStart, int indexINext, int indexJNext)
         {
-           // e.Graphics.DrawRectangle(new Pen(Color.Blue), e.CellBounds);
+
+            Control positionEnd = tablePanel.GetControlFromPosition(indexJNext, indexINext);
+
+            if (positionEnd != null)
+            {
+
+                var cellStart = tablePanel.GetPositionFromControl(positionStart);
+                var cellEnd = tablePanel.GetPositionFromControl(positionEnd);
+                stopwatch.Start();
+                tablePanel.SetCellPosition(positionEnd, cellStart);
+                tablePanel.SetCellPosition(positionStart, cellEnd);
+                
+                stopwatch.Stop();
+                //MessageBox.Show($"{stopwatch.ElapsedMilliseconds}");
+
+
+            }
         }
+
     }
 }

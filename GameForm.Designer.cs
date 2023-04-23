@@ -42,7 +42,6 @@
             this.tablePanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tablePanel.Size = new System.Drawing.Size(684, 661);
             this.tablePanel.TabIndex = 0;
-            this.tablePanel.CellPaint += new System.Windows.Forms.TableLayoutCellPaintEventHandler(this.tablePanel_CellPaint);
             // 
             // GameForm
             // 
