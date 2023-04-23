@@ -18,16 +18,19 @@ namespace TrainingPractice_02
         private Button button;
         private int[,] mas;
         private int size;
-        private Stopwatch stopwatch;
         public GameForm()
         {
             InitializeComponent();
+            
+           
         } 
         public GameForm(int count):this()
         {
 
             size = count;
-            mas = new int[size, size];
+            mas = new int[count, count];
+            Shuffle(ref mas);
+
             tablePanel.Dock = DockStyle.Fill;
 
             tablePanel.RowCount = count;
@@ -42,38 +45,36 @@ namespace TrainingPractice_02
 
                 tablePanel.RowStyles[i].SizeType = SizeType.Percent;
                 tablePanel.RowStyles[i].Height = height;
-                tablePanel.RowStyles.Add(new RowStyle()); 
-                for(var j = 0; j < count; j++)
+                tablePanel.RowStyles.Add(new RowStyle());
+                for (var j = 0; j < count; j++)
                 {
 
                     tablePanel.ColumnStyles[j].SizeType = SizeType.Percent;
                     tablePanel.ColumnStyles[j].Width = width;
                     tablePanel.ColumnStyles.Add(new ColumnStyle());
-                    if (i == count - 1 && j == count - 1)
+                    if (mas[i, j] == 0)
                     {
                         tablePanel.Controls.Add(new Label());
-                        mas[i,j] = -1;
-                        break;
                     }
-                    mas[i, j] = count * i + j + 1;
-                    button = new Button();
-                    button.Text = $"{count * i + j + 1}";
-                    button.Font = new Font("Times New Roman", 24);
-                    if(count > 10)
+                    else
                     {
-                        button.Font = new Font("Times New Roman", 14);
+                        button = new Button();
+                        button.Text = $"{mas[i, j]}";
+                        button.Font = new Font("Times New Roman", 24);
+                        if (count > 10)
+                        {
+                            button.Font = new Font("Times New Roman", 14);
+                        }
+                        button.Width = ClientRectangle.Width / count;
+                        button.Height = ClientRectangle.Height / count;
+                        button.BackColor = Color.Orange;
+                        button.ForeColor = Color.Black;
+                        button.FlatStyle = FlatStyle.Flat;
+                        button.Dock = DockStyle.Fill;
+                        tablePanel.Controls.Add(button);
+                        button.Click += Button_Click;
                     }
-                    button.Width = ClientRectangle.Width / count;
-                    button.Height = ClientRectangle.Height / count;
-                    button.BackColor = Color.Orange;
-                    button.ForeColor = Color.Black;
-                    button.FlatStyle = FlatStyle.Flat;
-                    button.Dock = DockStyle.Fill;
-                    tablePanel.Controls.Add(button);
-                    button.Click += Button_Click;
-                    
-                    
-                    
+
                 }
             }
         }
@@ -83,8 +84,7 @@ namespace TrainingPractice_02
             Button clickButton = (Button)sender;
             int.TryParse(clickButton.Text.ToString(), out int number); 
             int indexI = -1;
-            int indexJ = -1;
-            stopwatch = new Stopwatch();
+            int indexJ = -1;    
 
             for (int i = 0; i < size; i++)
             {
@@ -106,7 +106,7 @@ namespace TrainingPractice_02
             {
                 if (indexI + 1 != size)
                 {
-                    if (mas[indexI + 1, indexJ] == -1)
+                    if (mas[indexI + 1, indexJ] == 0)
                     {
                         //MessageBox.Show("Кнопка может переместиться вниз");
                         SwapCellsRight(positionStart, indexI + 1, indexJ);
@@ -117,7 +117,7 @@ namespace TrainingPractice_02
                 }
                 if (indexI != 0)
                 {
-                    if (mas[indexI - 1, indexJ] == -1)
+                    if (mas[indexI - 1, indexJ] == 0)
                     {
                         //MessageBox.Show("Кнопка может переместиться вверх");
                         SwapCellsLeft(positionStart, indexI - 1, indexJ);
@@ -129,7 +129,7 @@ namespace TrainingPractice_02
 
                 if (indexJ + 1 != size)
                 {
-                    if (mas[indexI, indexJ + 1] == -1)
+                    if (mas[indexI, indexJ + 1] == 0)
                     {
 
                         //MessageBox.Show("Кнопка может переместиться вправо");
@@ -144,7 +144,7 @@ namespace TrainingPractice_02
 
                 if (indexJ != 0)
                 {
-                    if (mas[indexI, indexJ - 1] == -1)
+                    if (mas[indexI, indexJ - 1] == 0)
                     {
 
                         //MessageBox.Show("Кнопка может переместиться влево");
@@ -171,11 +171,8 @@ namespace TrainingPractice_02
 
                 var cellStart = tablePanel.GetPositionFromControl(positionStart);
                 var cellEnd = tablePanel.GetPositionFromControl(positionEnd); 
-                stopwatch.Start();
                 tablePanel.SetCellPosition(positionStart, cellEnd);
                 tablePanel.SetCellPosition(positionEnd, cellStart);  
-                stopwatch.Stop();
-                //MessageBox.Show($"{stopwatch.ElapsedMilliseconds}");
                 
                
             }
@@ -190,14 +187,26 @@ namespace TrainingPractice_02
 
                 var cellStart = tablePanel.GetPositionFromControl(positionStart);
                 var cellEnd = tablePanel.GetPositionFromControl(positionEnd);
-                stopwatch.Start();
                 tablePanel.SetCellPosition(positionEnd, cellStart);
                 tablePanel.SetCellPosition(positionStart, cellEnd);
-                
-                stopwatch.Stop();
-                //MessageBox.Show($"{stopwatch.ElapsedMilliseconds}");
 
 
+            }
+        }
+
+        private void Shuffle(ref int[,] mas)
+        {
+            int num = 1,i,j;
+            var rnd = new Random();
+            while(num != size * size)
+            {
+                i = rnd.Next(size);
+                j = rnd.Next(size);
+                if (mas[i, j] == 0)
+                {
+                    mas[i, j] = num;
+                    num++;
+                }
             }
         }
 
