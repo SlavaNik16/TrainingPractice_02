@@ -17,12 +17,12 @@ namespace TrainingPractice_02
     {
         private Button button;
         private int[,] mas;
-        private int size;
+        private int size, step = 0;
+        private int sec = 0;
         public GameForm()
         {
             InitializeComponent();
-
-
+            timer.Start();
         }
         public GameForm(int count) : this()
         {
@@ -104,6 +104,7 @@ namespace TrainingPractice_02
             int temp;
             if (positionStart != null)
             {
+               
                 if (indexI + 1 != size)
                 {
                     if (mas[indexI + 1, indexJ] == -1)
@@ -113,6 +114,7 @@ namespace TrainingPractice_02
                         temp = mas[indexI, indexJ];
                         mas[indexI, indexJ] = mas[indexI + 1, indexJ];
                         mas[indexI + 1, indexJ] = temp;
+
                     }
                 }
                 if (indexI != 0)
@@ -158,7 +160,8 @@ namespace TrainingPractice_02
             }
             if (isWin())
             {
-                MessageBox.Show("Поздравляю вы победили!", "Ура!!!");
+                timer.Stop();
+                MessageBox.Show($"Поздравляю вы победили!\nВсего времени: {sec / 60 / 60}:{sec / 60}:{sec%60}\nВсего попыток: ", "Ура!!!");
                 Close();
             }
 
@@ -178,7 +181,7 @@ namespace TrainingPractice_02
                 var cellEnd = tablePanel.GetPositionFromControl(positionEnd);
                 tablePanel.SetCellPosition(positionStart, cellEnd);
                 tablePanel.SetCellPosition(positionEnd, cellStart);
-
+                step++;
 
             }
         }
@@ -194,7 +197,7 @@ namespace TrainingPractice_02
                 var cellEnd = tablePanel.GetPositionFromControl(positionEnd);
                 tablePanel.SetCellPosition(positionEnd, cellStart);
                 tablePanel.SetCellPosition(positionStart, cellEnd);
-
+                step++;
 
             }
         }
@@ -215,27 +218,15 @@ namespace TrainingPractice_02
             {
                 i = rnd.Next(size);
                 j = rnd.Next(size);
-                if (num == size * size - 1)
-                {
-                    if (size == 4)
-                    {
-                        int temp;
-                        if (mas[i, j] == 0)
-                        {
-                            temp = mas[size - 1, size - 2];
-                            mas[size - 1, size - 2] = num;
-                            mas[i, j] = temp;
-                            break;
-                        }
-                    }
-                }
 
                 if (mas[i, j] == 0)
                 {
+                   
                     mas[i, j] = num;
                     num++;
 
                 }
+                
             }
             mas[size - 1, size - 1] = -1;
             if (!isShuffle()) Shuffle(); }
@@ -262,27 +253,37 @@ namespace TrainingPractice_02
 
         private bool isShuffle()
         {
-            int num = 0;
-            int countMess = 0;
+            int inv = 0;
+            int[] helping = new int[size*size];
             for (int i = 0; i < size; i++)
             {
                 for (int j = 0; j < size; j++)
                 {
-                    num++;
-                    if (num == size * size)
-                    {
-                        num = -1;
-                    }
-                    if (mas[i, j] != num)
-                    {
-                        countMess++;
-                    }
+                    helping[size * i+j] = mas[i, j];
                 }
             }
-            //if (countMess % 2 == 0 && countMess != size * size - 2) return true;
-            if ((countMess % 2 != 0 && size % 2 != 0) ||
-                (countMess % 2 == 0 && size % 2 == 0)) return true;
+            for(int i = 0; i < size*size; i++)
+            {
+                for(int j = 0; j < i; j++)
+                {
+                    if (helping[j] > helping[i])
+                        inv++;
+                }
+            }
+            //for (int i = 0; i < size*size; ++i)
+            //    if (one[i] == -1)
+            //        inv += 1 + i / 4;
+            inv += 3;
+            if ((size % 2 == 0 && inv % 2 == 0) ||
+               (size % 2 != 0 && inv % 2 != 0)) return true;
             return false;
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            sec++;
+            this.Text = $"{sec/60/60}:{sec / 60 % 60}:{sec%60}";
+
         }
     }
 }

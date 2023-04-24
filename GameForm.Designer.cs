@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tablePanel = new System.Windows.Forms.TableLayoutPanel();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // tablePanel
@@ -43,6 +45,12 @@
             this.tablePanel.Size = new System.Drawing.Size(684, 661);
             this.tablePanel.TabIndex = 0;
             // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 1000;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -53,7 +61,7 @@
             this.MinimizeBox = false;
             this.Name = "GameForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "GameForm";
+            this.Text = "Пятнашки - время";
             this.ResumeLayout(false);
 
         }
@@ -61,5 +69,6 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tablePanel;
+        private System.Windows.Forms.Timer timer;
     }
 }
