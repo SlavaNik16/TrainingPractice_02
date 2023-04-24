@@ -161,7 +161,7 @@ namespace TrainingPractice_02
             if (isWin())
             {
                 timer.Stop();
-                MessageBox.Show($"Поздравляю вы победили!\nВсего времени: {sec / 60 / 60}:{sec / 60}:{sec%60}\nВсего попыток: ", "Ура!!!");
+                MessageBox.Show($"Поздравляю вы победили!\nВсего времени: {sec / 60 / 60}:{sec / 60}:{sec%60}\nВсего попыток: {step}", "Ура!!!");
                 Close();
             }
 
