@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TrainingPractice_02
@@ -36,21 +27,20 @@ namespace TrainingPractice_02
             tablePanel.RowCount = count;
             tablePanel.ColumnCount = count;
 
-            var height = 100.0f / count;
-            var width = 100.0f / count;
-
+            var heightRow = 100.0f / count;
+            var widthColumn = 100.0f / count;
 
             for (var i = 0; i < count; i++)
             {
 
                 tablePanel.RowStyles[i].SizeType = SizeType.Percent;
-                tablePanel.RowStyles[i].Height = height;
+                tablePanel.RowStyles[i].Height = heightRow;
                 tablePanel.RowStyles.Add(new RowStyle());
                 for (var j = 0; j < count; j++)
                 {
 
                     tablePanel.ColumnStyles[j].SizeType = SizeType.Percent;
-                    tablePanel.ColumnStyles[j].Width = width;
+                    tablePanel.ColumnStyles[j].Width = widthColumn;
                     tablePanel.ColumnStyles.Add(new ColumnStyle());
                     if (mas[i, j] == -1)
                     {
@@ -70,6 +60,8 @@ namespace TrainingPractice_02
                         button.BackColor = Color.Orange;
                         button.ForeColor = Color.Black;
                         button.FlatStyle = FlatStyle.Flat;
+                        button.FlatAppearance.BorderSize = 2;
+                        button.FlatAppearance.BorderColor = Color.FromArgb(89,89,89);
                         button.Dock = DockStyle.Fill;
                         tablePanel.Controls.Add(button);
                         button.Click += Button_Click;
@@ -282,8 +274,7 @@ namespace TrainingPractice_02
         private void timer_Tick(object sender, EventArgs e)
         {
             sec++;
-            this.Text = $"{sec/60/60}:{sec / 60 % 60}:{sec%60}";
-
+            this.Text = $"{sec / 60 / 60}:{sec / 60 % 60}:{sec % 60}";
         }
     }
 }
