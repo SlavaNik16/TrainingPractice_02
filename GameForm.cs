@@ -224,7 +224,11 @@ namespace TrainingPractice_02
             mas[size - 1, size - 1] = -1;
             if (!isShuffle())
             {
-                if(stek >= 200)MessageBox.Show("Слишком тщательно перемешиваем!");
+                if (stek >= 200)
+                {
+                    MessageBox.Show("Слишком тщательно перемешиваем!");
+                    stek = 0;
+                }
                 Shuffle();
             }
         }
