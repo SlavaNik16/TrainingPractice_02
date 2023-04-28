@@ -10,6 +10,7 @@ namespace TrainingPractice_02
         private int[,] mas;
         private int size, step = 0;
         private int sec = 0;
+        private long stek = 0;
         public GameForm()
         {
             InitializeComponent();
@@ -221,7 +222,12 @@ namespace TrainingPractice_02
                 
             }
             mas[size - 1, size - 1] = -1;
-            if (!isShuffle()) Shuffle(); }
+            if (!isShuffle())
+            {
+                if(stek >= 200)MessageBox.Show("Слишком тщательно перемешиваем!");
+                Shuffle();
+            }
+        }
 
         private bool isWin()
         {
@@ -266,6 +272,7 @@ namespace TrainingPractice_02
             //    if (one[i] == -1)
             //        inv += 1 + i / 4;
             inv += 3;
+            stek += 1;
             if ((size % 2 == 0 && inv % 2 == 0) ||
                (size % 2 != 0 && inv % 2 != 0)) return true;
             return false;
